@@ -1,7 +1,7 @@
 import config
+import globalPluginHandler
 import queueHandler
 import ui
-from globalPluginHandler import GlobalPlugin
 from logHandler import log as logger
 from scriptHandler import script
 
@@ -30,8 +30,19 @@ def _call_and_notify(callback, *args, **kwargs):
         raise
 
 
-class GlobalPlugin(GlobalPlugin):
+class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     scriptCategory = "Clash Control"
+    for number in range(1, 11):
+
+        @script(
+            description=f"Select clash mode {number}",
+            gesture=f"kb:nvda+alt+{number % 10}",
+        )
+        def script_select_clash_mode(self, gesture, number=number):
+            self.select_mode(number - 1)
+
+        _script_name = f"select_mode{number}"
+        locals()[f"script_{_script_name}"] = script_select_clash_mode
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -82,6 +93,18 @@ class GlobalPlugin(GlobalPlugin):
         if current_mode_index is None:
             current_mode_index = self.service.current_mode_index
         self.current_mode_index = (current_mode_index + 1) % len(self.service.modes)
+        self.apply_mode_selection()
+
+    def select_mode(self, mode_index: int):
+        if not self._prepare_service():
+            return
+        if len(self.service.modes) <= mode_index:
+            ui.message("Mode not found")
+            return
+        self.current_mode_index = mode_index
+        self.apply_mode_selection()
+
+    def apply_mode_selection(self):
         ui.message(self.service.modes[self.current_mode_index])
         self.operation_manager.schedule(
             "change_mode",
