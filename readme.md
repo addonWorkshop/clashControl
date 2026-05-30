@@ -4,6 +4,7 @@ Select mode and control clash proxy groups from nvda.
 ## Features
 - Cycle modes
 - Cycle proxies in proxy group (only first group is supported now).
+- Quickly select mode using 10 remappable nvda gestures
 - Base url and secret configuration
 - Modes list detection (sing-box)
 - Ability to specify modes manually (non-sing-box clash controllers)
