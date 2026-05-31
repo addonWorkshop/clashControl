@@ -27,7 +27,7 @@ addon_info = {
 		"Select mode and control clash proxy groups from nvda."
 	),
 	# version
-	"addon_version": "0.2.0",
+	"addon_version": "0.3.0",
 	# Author(s)
 	"addon_author": "Danstiv <danstiv@yandex.ru>",
 	# URL for the add-on documentation support

@@ -10,8 +10,8 @@ class ClashService:
         self.modes = None if modes is None else []
         self.current_mode_index = 0
 
-    def fetch_data(self):
-        if self.data_fetched:
+    def fetch_data(self, ignore_cache=False):
+        if self.data_fetched and not ignore_cache:
             return
         proxies = self.client.get_proxies()
         self.proxy_groups.clear()

@@ -16,3 +16,7 @@ class ClashProxyGroup:
             proxy_names=proxy_names,
             current_proxy_index=current_proxy_index,
         )
+
+    @property
+    def current_proxy_name(self):
+        return self.proxy_names[self.current_proxy_index]

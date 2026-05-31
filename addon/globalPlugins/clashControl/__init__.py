@@ -71,9 +71,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             modes=modes,
         )
 
-    def _prepare_service(self):
+    def _prepare_service(self, ignore_cache=False):
         try:
-            self.service.fetch_data()
+            self.service.fetch_data(ignore_cache=ignore_cache)
         except Exception:
             ui.message(
                 "Failed to fetch information from the clash server, see logs for details"
@@ -138,3 +138,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             group_index,
             self.current_proxy_indexes[group_index],
         )
+
+    @script(description="Synchronize and announce state")
+    def script_sync(self, gesture):
+        if not self._prepare_service(True):
+            return
+        part = [f'Mode: "{self.service.mode}".']
+        for group in self.service.proxy_groups:
+            part.append(f'Group "{group.name}": "{group.current_proxy_name}".')
+        ui.message(" ".join(part))
