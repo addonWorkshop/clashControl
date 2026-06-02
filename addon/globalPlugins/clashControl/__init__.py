@@ -102,13 +102,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             ui.message("Mode not found")
             return
         self.current_mode_index = mode_index
-        self.apply_mode_selection()
+        self.apply_mode_selection(0)
 
-    def apply_mode_selection(self):
+    def apply_mode_selection(self, delay=1):
         ui.message(self.service.modes[self.current_mode_index])
         self.operation_manager.schedule(
             "change_mode",
-            1,
+            delay,
             _call_and_notify,
             self.service.set_mode_by_index,
             self.current_mode_index,
