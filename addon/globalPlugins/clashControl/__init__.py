@@ -44,6 +44,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         _script_name = f"select_mode{number}"
         locals()[f"script_{_script_name}"] = script_select_clash_mode
 
+        @script(description=f"Cycle proxy group {number}")
+        def script_cycle_proxy_group(self, gesture, number=number):
+            self.cycle_proxy_group(number - 1)
+
+        _script_name = f"cycle_proxy_group{number}"
+        locals()[f"script_{_script_name}"] = script_cycle_proxy_group
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config = config.conf["clashControl"]
@@ -51,7 +58,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         self.initialize_service()
         self.operation_manager = DeferredOperationManager()
         self.current_mode_index = None
-        self.current_proxy_indexes = [None]
+        # Required to store temporary value when the user has
+        # switched groups but the deferred switching has not yet occurred.
+        self.current_proxy_indexes = None
 
     def terminate(self):
         remove_settings()
@@ -80,6 +89,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             )
             logger.exception("Clash server data fetch failed:")
             return False
+        if self.current_proxy_indexes is None or ignore_cache:
+            self.current_proxy_indexes = [
+                g.current_proxy_index for g in self.service.proxy_groups
+            ]
         return True
 
     @script(description="Cycle modes")
@@ -114,18 +127,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             self.current_mode_index,
         )
 
-    @script(description="Cycle first proxy group")
-    def script_cycle_group(self, gesture):
+    def cycle_proxy_group(self, group_index):
         if not self._prepare_service():
             return
-        group_index = 0
         if len(self.service.proxy_groups) <= group_index:
-            ui.message("No proxy groups found")
+            ui.message("Proxy group not found")
             return
         group = self.service.proxy_groups[group_index]
         current_proxy_index = self.current_proxy_indexes[group_index]
-        if current_proxy_index is None:
-            current_proxy_index = group.current_proxy_index
         self.current_proxy_indexes[group_index] = (current_proxy_index + 1) % len(
             group.proxy_names
         )
@@ -143,7 +152,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def script_sync(self, gesture):
         if not self._prepare_service(True):
             return
-        part = [f'Mode: "{self.service.mode}".']
+        chunks = [f'Mode: "{self.service.mode}".']
         for group in self.service.proxy_groups:
-            part.append(f'Group "{group.name}": "{group.current_proxy_name}".')
-        ui.message(" ".join(part))
+            chunks.append(f'Group "{group.name}": "{group.current_proxy_name}".')
+        ui.message(" ".join(chunks))

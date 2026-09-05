@@ -3,7 +3,7 @@ Select mode and control clash proxy groups from nvda.
 
 ## Features
 - Cycle modes
-- Cycle proxies in proxy group (only first group is supported now).
+- Cycle proxies in proxy groups with 10 nvda gestures (unassigned by default)
 - Quickly select mode using 10 remappable nvda gestures
 - Base url and secret configuration
 - Modes list detection (sing-box)
@@ -11,6 +11,6 @@ Select mode and control clash proxy groups from nvda.
 
 ## Usage
 1. Go to NVDA settings, find Clash Control and configure base url and secret.
-2. Assign gestures for cycling modes and / or proxy group.
+2. Assign gestures for cycling modes and / or proxy groups.
 3. Press assigned hotkey to cycle modes / proxies in proxy group forward.
 4. You can cycle multiple times, the changes will not be applied, they will take effect when you stop cycling for more than a second.
