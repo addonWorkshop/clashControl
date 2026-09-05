@@ -1,3 +1,5 @@
+from contextlib import suppress
+
 from .client import ClashClient
 from .models import ClashProxyGroup
 
@@ -15,16 +17,14 @@ class ClashService:
             return
         proxies = self.client.get_proxies()
         self.proxy_groups.clear()
-        for proxy_name, proxy in proxies["proxies"].items():
+        for _proxy_name, proxy in proxies["proxies"].items():
             if proxy["type"] != "Selector":
                 continue
             self.proxy_groups.append(ClashProxyGroup.from_api_object(proxy))
         configs = self.client.get_configs()
         self.modes = self.modes if self.modes is not None else configs.get("mode-list", [])
-        try:
+        with suppress(ValueError):
             self.current_mode_index = self.modes.index(configs["mode"])
-        except ValueError:
-            pass
         self.data_fetched = True
 
     @property
