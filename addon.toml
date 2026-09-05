@@ -10,7 +10,7 @@ summary = "Clash Control"
 
 description = "Select mode and control clash proxy groups using NVDA gestures."
 
-version = "0.4.1"
+version = "0.5.0"
 # Author(s)
 author = "Danstiv <danstiv@yandex.ru>"
 # URL for the add-on documentation support
