@@ -20,9 +20,7 @@ class ClashService:
                 continue
             self.proxy_groups.append(ClashProxyGroup.from_api_object(proxy))
         configs = self.client.get_configs()
-        self.modes = (
-            self.modes if self.modes is not None else configs.get("mode-list", [])
-        )
+        self.modes = self.modes if self.modes is not None else configs.get("mode-list", [])
         try:
             self.current_mode_index = self.modes.index(configs["mode"])
         except ValueError:

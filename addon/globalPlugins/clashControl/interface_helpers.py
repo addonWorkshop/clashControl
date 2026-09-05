@@ -102,9 +102,7 @@ def bind_with_config(control, config_key, converter=None):
         else:
             converter = DEFAULT_CONVERTERS_MAP[control.__class__]
     if converter is None:
-        raise ValueError(
-            f"Converter for {control.__class__.__name__} control class is not registered"
-        )
+        raise ValueError(f"Converter for {control.__class__.__name__} control class is not registered")
     control.converter = converter(control)
     control.config_key = config_key
     config = None

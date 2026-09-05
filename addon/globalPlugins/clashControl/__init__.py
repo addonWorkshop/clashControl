@@ -84,15 +84,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         try:
             self.service.fetch_data(ignore_cache=ignore_cache)
         except Exception:
-            ui.message(
-                "Failed to fetch information from the clash server, see logs for details"
-            )
+            ui.message("Failed to fetch information from the clash server, see logs for details")
             logger.exception("Clash server data fetch failed:")
             return False
         if self.current_proxy_indexes is None or ignore_cache:
-            self.current_proxy_indexes = [
-                g.current_proxy_index for g in self.service.proxy_groups
-            ]
+            self.current_proxy_indexes = [g.current_proxy_index for g in self.service.proxy_groups]
         return True
 
     @script(description="Cycle modes")
@@ -135,9 +131,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             return
         group = self.service.proxy_groups[group_index]
         current_proxy_index = self.current_proxy_indexes[group_index]
-        self.current_proxy_indexes[group_index] = (current_proxy_index + 1) % len(
-            group.proxy_names
-        )
+        self.current_proxy_indexes[group_index] = (current_proxy_index + 1) % len(group.proxy_names)
         ui.message(group.proxy_names[self.current_proxy_indexes[group_index]])
         self.operation_manager.schedule(
             f"change_proxy_group_{group_index}",
