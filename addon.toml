@@ -1,0 +1,45 @@
+# Configuration for this NVDA add-on, migrated from buildVars.py.
+#
+# The comment directly above a translatable string is that string's note to
+# translators, and is carried into the generated .pot file.
+
+[addon]
+# add-on Name/identifier, internal for NVDA
+name = "clashControl"
+summary = "Clash Control"
+
+description = "Select mode and control clash proxy groups using NVDA gestures."
+
+version = "0.4.1"
+# Author(s)
+author = "Danstiv <danstiv@yandex.ru>"
+# URL for the add-on documentation support
+url = "https://github.com/addonWorkshop/clashControl"
+# Documentation file name
+docFileName = "readme.html"
+# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
+minimumNVDAVersion = "2025.1"
+# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
+lastTestedNVDAVersion = "2026.1"
+# Add-on update channel (default is None, denoting stable releases,
+# and for development releases, use "dev".)
+# Do not change unless you know what you are doing!
+updateChannel = "dev"
+
+[build]
+# The Python files that make up this add-on, scanned for translatable strings.
+pythonSources = ["addon/globalPlugins/**/*.py"]
+
+# Files inside the `addon` directory to leave out of the built add-on.
+excludedFiles = ["*.pyc"]
+
+[l10n]
+# The language this add-on is written in.
+baseLanguage = "en"
+
+# Extra files to scan for translatable strings.
+extraSources = []
+
+[docs]
+# Python-Markdown extensions used when rendering documentation.
+markdownExtensions = []
